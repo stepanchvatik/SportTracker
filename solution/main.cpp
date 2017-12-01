@@ -10,8 +10,8 @@
 
 using namespace std;
 
-ifstream ifs("..\\data\\data.csv");
-ofstream ofs("..\\data\\data.csv",ios_base::app);
+ifstream ifs("..\\vstupnidata\\data.csv");
+ofstream ofs("..\\vstupnidata\\data.csv",ios_base::app);
 string date;
 string type;
 double route;
@@ -44,6 +44,11 @@ void writeActivity(Activities activity[])
 
     cout<<"Zadejte datum ve formatu DDMMYYYY: ";
     cin >> date;
+    while(date[0]-'0' > 3 || date[2]-'0'>1)
+    {
+        cout << "Zadejte platne datum!" << endl;
+        cin >> date;
+    }
     cout<<"Zadejte typ aktivity (chuze, beh, kolo, inline): ";
     cin>>type;
     while(type!="beh"&&type!="kolo"&&type!="chuze"&&type!="inline")
@@ -51,10 +56,22 @@ void writeActivity(Activities activity[])
         cout<<"Zadejte platnou aktivitu!" << endl;
         cin >> type;
     }
+
     cout << "Zadejte vzdalenost v km: ";
     cin >> route;
+    while(cin.fail())
+    {
+        cout<< "Zadejte platnou vzdalenost!"<<endl;
+        cin >> route;
+    }
+
     cout << "Zadejte cas v minutach: ";
     cin >>time;
+    while(cin.fail())
+    {
+        cout<< "Zadejte platnoy cas!"<<endl;
+        cin >> time;
+    }
     calories = countCalories(route,time);
     ofs<<generateId() << "," << date << "," << type << "," << route << "," << time << "," << calories << endl;
     ofs.close();
@@ -117,9 +134,25 @@ void fillActivities(Activities activity[])
 
 void generateHtml(Activities activity[])
 {
-    ofstream html("..\\html\\vystup.html");
+    ofstream html("..\\vystupnidata\\vystup.html");
+    html<<"<html><head><title>SportTracker</title><style>td{border:2px solid black;}</style></head><body>";
+
+    cout<<"Zadejte typ aktivity (chuze, beh, kolo, inline): ";
+    cin>>type;
+    while(type!="beh"&&type!="kolo"&&type!="chuze"&&type!="inline")
+    {
+        cout<<"Zadejte platnou aktivitu!" << endl;
+        cin >> type;
+    }
+    html<<"<table><tr>";
+    for(int i=0;i<generateId();i++)
+    {
+        if(activity[i].stype==type)
+            html << "<td>"<< activity[i].sdate << "</td>";
+    }
+    html<<"</tr></table>";
     cout<<"Bylo vygenerovano HTML"<<endl;
-    html << "DATA FROM Activity struct";
+    html<<"</body></html>";
     html.flush();
     menu(activity);
 }
@@ -152,10 +185,12 @@ void menu(Activities activity[])
 
 int main()
 {
-    Activities activity[generateId()-1];
-    cout << generateId() <<endl;
+    int fills = generateId();
+    fills--;
+    Activities activity[fills];
     fillActivities(activity);
-    cout << activity[0].stype;
+    generateId();
+
     cout << "Vitejte v aplikaci pro zapis sportovnich aktivit" << endl;
     menu(activity);
     return 0;
