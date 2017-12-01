@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1512046487 source:c:\users\stepa\desktop\chvatík\projects\codeblock\semestralka\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<cstdlib>
+	<vector>
+
