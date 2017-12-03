@@ -23,9 +23,9 @@ typedef struct{
     unsigned int sID;
     string sdate;
     string stype;
-    double sroute;
-    double stime;
-    double scalories;
+    string sroute;
+    string stime;
+    string scalories;
 }  Activities;
 
 void menu(Activities activity[]);
@@ -135,7 +135,9 @@ void fillActivities(Activities activity[])
 void generateHtml(Activities activity[])
 {
     ofstream html("..\\vystupnidata\\vystup.html");
-    html<<"<html><head><title>SportTracker</title><style>td{border:2px solid black;}</style></head><body>";
+    html<<"<html><head><title>SportTracker</title><style>td{border:2px solid black;} table{margin-bottom:20px;width:60%;margin-left:20%}</style></head><body>";
+
+    //Vyber aktivity pro mesicni souhrn a prumerna rychlost
 
     cout<<"Zadejte typ aktivity (chuze, beh, kolo, inline): ";
     cin>>type;
@@ -144,13 +146,24 @@ void generateHtml(Activities activity[])
         cout<<"Zadejte platnou aktivitu!" << endl;
         cin >> type;
     }
-    html<<"<table><tr>";
-    for(int i=0;i<generateId();i++)
+
+    for(int i=1;i<13;i++)
     {
-        if(activity[i].stype==type)
-            html << "<td>"<< activity[i].sdate << "</td>";
+        html<<"<table><tr><td colspan=\"100%\">" <<i<<". mesic</td></tr>";
+
+        for(int j=0;j<generateId();j++)
+        {
+            if(activity[j].sdate[3]-'0'==i)
+            {
+                if(activity[j].stype==type)
+                html << "<tr><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << "</td><td>" << activity[j].sroute<<"km"<< "</td></tr>";
+            }
+        }
+
+        html<<"</table>";
     }
-    html<<"</tr></table>";
+
+
     cout<<"Bylo vygenerovano HTML"<<endl;
     html<<"</body></html>";
     html.flush();
