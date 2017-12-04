@@ -3,7 +3,8 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
-
+#include <stdio.h>
+#include <stdlib.h>
 ///@author Stepan Chvatik
 ///@date 17.11.2017
 ///@mainpage CHV0037 Activity Log
@@ -17,6 +18,7 @@ string type;
 double route;
 double time;
 double calories;
+double speed;
 
 //Struct
 typedef struct{
@@ -26,6 +28,7 @@ typedef struct{
     string sroute;
     string stime;
     string scalories;
+    string sspeed;
 }  Activities;
 
 void menu(Activities activity[]);
@@ -73,7 +76,8 @@ void writeActivity(Activities activity[])
         cin >> time;
     }
     calories = countCalories(route,time);
-    ofs<<generateId() << "," << date << "," << type << "," << route << "," << time << "," << calories << endl;
+    speed = route / (time/60);
+    ofs<<generateId() << "," << date << "," << type << "," << route << "," << time << "," << calories << "," << speed<< endl;
     ofs.close();
 
     menu(activity);
@@ -125,6 +129,7 @@ void fillActivities(Activities activity[])
                 case 3: {activity[poradi].sroute += radek[i]; break;}
                 case 4: {activity[poradi].stime += radek[i]; break;}
                 case 5: {activity[poradi].scalories += radek[i]; break;}
+                case 6: {activity[poradi].sspeed += radek[i]; break;}
            }
         }
         activity[poradi].sID = atoi(ID.c_str());
@@ -135,7 +140,9 @@ void fillActivities(Activities activity[])
 void generateHtml(Activities activity[])
 {
     ofstream html("..\\vystupnidata\\vystup.html");
-    html<<"<html><head><title>SportTracker</title><style>td{border:2px solid black;} table{margin-bottom:20px;width:60%;margin-left:20%}</style></head><body>";
+    string troll = "";
+    string replacetroll="<script type=\"text/javascript\">var topik=50;function easterEgg(){document.getElementById('EE').style.top=topik+'px';topik+=56;if(topik==1000){clearInterval(myFunction);}}var myFunction = setInterval(easterEgg,2000);</script><div id=\"EE\" style=\"background-color:white;width:100%;height:100%;position:fixed;top:50px;\"></div>"
+    html<<"<html><head><title>SportTracker</title><style>*{cursor:wait;}td{border:2px solid black; text-align:center;transition: ease-in-out 0.3s;} table{margin-bottom:30px;width:40%;margin-left:30%;border:2px solid black;} tr:hover td{background-color:lightgrey;font-weight:bold;}</style></head><body>"<< troll << "<h1 style=\"font-size:50px;text-align:center\">SportTracker</h1>";
 
     //Vyber aktivity pro mesicni souhrn a prumerna rychlost
 
@@ -146,23 +153,85 @@ void generateHtml(Activities activity[])
         cout<<"Zadejte platnou aktivitu!" << endl;
         cin >> type;
     }
+    html<<"<h1 style=\"text-align:center;\">Mesicni souhrn aktivity "<<type<<"</h1>";
+
 
     for(int i=1;i<13;i++)
     {
-        html<<"<table><tr><td colspan=\"100%\">" <<i<<". mesic</td></tr>";
-
+        bool goout = true;
+        for(int j=0;j<generateId();j++)
+        {
+            if(activity[j].sdate[3]-'0'==i&&goout)
+            {
+                if(activity[j].stype==type)
+                {
+                    html<<"<table cellspacing=\"0\"><tr><td colspan=\"100%\" style=\"background-color:yellow;\">" <<i<<". mesic</td></tr><tr><td>Den</td><td>Vzdalenost</td><td>Cas</td><td>Kalore</td><td>Rychlost</td></tr>";
+                    goout=false;
+                }
+            }
+        }
         for(int j=0;j<generateId();j++)
         {
             if(activity[j].sdate[3]-'0'==i)
             {
                 if(activity[j].stype==type)
-                html << "<tr><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << "</td><td>" << activity[j].sroute<<"km"<< "</td></tr>";
+                html << "<tr><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << ".</td><td>" << activity[j].sroute<<"km"<< "</td><td>"<<activity[j].stime<<" minut</td><td>"<<activity[j].scalories<<"kcal</td><td>"<<activity[j].sspeed <<  "km/h</td></tr>";
             }
         }
 
         html<<"</table>";
     }
 
+
+
+    int pocet[4];
+    string names[4] = {"inline","beh","chuze","kolo"};
+    string newnames[4];
+    pocet[0]=0; //inline
+    pocet[1]=0; //beh
+    pocet[2]=0; //chuze
+    pocet[3]=0; //kolo
+    for(int j=0;j<generateId();j++)
+    {
+            if(activity[j].stype=="inline")
+                pocet[0]++;
+            else if(activity[j].stype=="beh")
+                pocet[1]++;
+            else if(activity[j].stype=="chuze")
+                pocet[2]++;
+            else if(activity[j].stype=="kolo")
+                pocet[3]++;
+    }
+
+    for(int i = 0;i<4;i++)
+    {
+        int tmp = pocet[0];
+        int index=0;
+        for(int j = 1;j<4;j++)
+        {
+            if(tmp<pocet[j])
+            {
+                tmp=pocet[j];
+                index=j;
+            }
+
+        }
+        pocet[index]=0;
+
+        newnames[i] = names[index];
+    }
+    html<<"<h1 style=\"text-align:center;\">Rocni tabulka serazena podle cetnosti</h1><table cellspacing=\"0\"><tr><td colspan=\"100%\" style=\"background-color:yellow;\">ROCNI PREHLED</td></tr><tr><td>Typ</td><td>Den</td><td>Vzdalenost</td><td>Cas</td><td>Kalore</td><td>Rychlost</td></tr>";
+    for(int i =0;i<4;i++)
+    {
+         for(int j=0;j<generateId();j++)
+        {
+
+                if(activity[j].stype==newnames[i])
+                html << "<tr><td>"<<activity[j].stype<<"</td><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << "."<<activity[j].sdate[0]<<activity[j].sdate[1]<<".</td><td>" << activity[j].sroute<<"km"<< "</td><td>"<<activity[j].stime<<" minut</td><td>"<<activity[j].scalories<<"kcal</td><td>"<<activity[j].sspeed <<  "km/h</td></tr>";
+
+        }
+    }
+    html<<"</table>";
 
     cout<<"Bylo vygenerovano HTML"<<endl;
     html<<"</body></html>";
@@ -203,7 +272,6 @@ int main()
     Activities activity[fills];
     fillActivities(activity);
     generateId();
-
     cout << "Vitejte v aplikaci pro zapis sportovnich aktivit" << endl;
     menu(activity);
     return 0;
