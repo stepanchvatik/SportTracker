@@ -1,0 +1,11 @@
+﻿Štěpán Chvatík (CHV 0037), Cvičení: C/07 st 12:30 - Sport tracker
+Zadání: Aplikace pro záznam sportovních aktivit ukládá výsledky do CSV souboru. Ten obsahuje:
+unikátní ID sportovní aktivity
+datum konání aktivity
+typ aktivity (chůze, běh, kolo, inline)
+celkovou vzdálenost v km, dobu v minutách
+odhad spálených kJ
+
+Pro data z vytvořeného/načteného CSV a vstupu uživatele z klávesnice vygenerujte přehled do HTML, který bude obsahovat:
+měsíční souhrn dle typu aktivit včetně dopočtené průměrné rychlosti
+roční souhrn dle typu aktivit seřazených sestupně podle četnosti sportovních aktivit

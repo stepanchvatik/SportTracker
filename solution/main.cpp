@@ -5,9 +5,11 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+///@brief Hlavni soubor programu
 ///@author Stepan Chvatik
 ///@date 17.11.2017
 ///@mainpage CHV0037 Activity Log
+///@file main.cpp
 
 using namespace std;
 
@@ -19,8 +21,17 @@ double route;
 double time;
 double calories;
 double speed;
+int *mesicniSouhrn = (int*)malloc(sizeof(int));
+///@struct Activities
+///@brief Struktura obsahujici vsechny aktivity
+///@param Activities.sID            Unikatni ID kazde aktivity
+///@param Activities.sdate          Datum konani aktivity DDMMYYYY
+///@param Activities.stype          Typ aktivity
+///@param Activities.sroute         Vzdalenost
+///@param Activities.stime          Cas aktivity
+///@param Activities.scalories      Vypoctene kalorie
+///@param Activities.sspeed         Dopoctena rychlost
 
-//Struct
 typedef struct{
     unsigned int sID;
     string sdate;
@@ -31,15 +42,23 @@ typedef struct{
     string sspeed;
 }  Activities;
 
+
+///@brief Funkce pro volani menu
+///@param activity      Predavani pole ze struktury
 void menu(Activities activity[]);
+
+///@brief Funkce pro zjisteni poctu radku v CSV (generovani nasledujiciho ID)
 int generateId();
+
+///@brief Funkce pro vypocet kalorii
+///@param dist      Potrebna vzdalenost aktivity
+///@param cas      Potrebny cas aktivity
 double countCalories(double dist, double time);
 
 
 
 
-
-//Function for user input
+///@brief Funkce pro zapsani aktivity
 void writeActivity(Activities activity[])
 {
 
@@ -47,10 +66,19 @@ void writeActivity(Activities activity[])
 
     cout<<"Zadejte datum ve formatu DDMMYYYY: ";
     cin >> date;
-    while(date[0]-'0' > 3 || date[2]-'0'>1)
+    int day;
+    int month;
+    int year;
+    day = atoi(date.substr(0,2).c_str());
+    month = atoi(date.substr(2,2).c_str());
+    year = atoi(date.substr(4,4).c_str());
+    while(day>31||month>12||year>2017)
     {
         cout << "Zadejte platne datum!" << endl;
         cin >> date;
+        day = atoi(date.substr(0,2).c_str());
+        month = atoi(date.substr(2,2).c_str());
+        year = atoi(date.substr(4,4).c_str());
     }
     cout<<"Zadejte typ aktivity (chuze, beh, kolo, inline): ";
     cin>>type;
@@ -72,7 +100,7 @@ void writeActivity(Activities activity[])
     cin >>time;
     while(cin.fail())
     {
-        cout<< "Zadejte platnoy cas!"<<endl;
+        cout<< "Zadejte platny cas!"<<endl;
         cin >> time;
     }
     calories = countCalories(route,time);
@@ -83,7 +111,7 @@ void writeActivity(Activities activity[])
     menu(activity);
 }
 
-//ID for each row in CSV file
+///@brief Funkce generovani ID viz vyse
 int generateId()
 {
 
@@ -99,14 +127,15 @@ int generateId()
 
 }
 
-//Counting Calories
+///@brief Realizace funkce vypoctu kalorii
 double countCalories(double dist, double time)
 {
     double caloriesCount = dist/(time/60)*time * 0.2;
     return caloriesCount;
 }
 
-//Filling activities struct
+///@brief Funkce pro naplneni pole struktury
+///@param activity      Predavani pole
 void fillActivities(Activities activity[])
 {
     string radek;
@@ -137,13 +166,30 @@ void fillActivities(Activities activity[])
     }
 }
 
+
+
+///@brief Funkce pro generovani HTML
 void generateHtml(Activities activity[])
 {
     ofstream html("..\\vystupnidata\\vystup.html");
-    string troll = "";
-    string replacetroll="<script type=\"text/javascript\">var topik=50;function easterEgg(){document.getElementById('EE').style.top=topik+'px';topik+=56;if(topik==1000){clearInterval(myFunction);}}var myFunction = setInterval(easterEgg,2000);</script><div id=\"EE\" style=\"background-color:white;width:100%;height:100%;position:fixed;top:50px;\"></div>"
-    html<<"<html><head><title>SportTracker</title><style>*{cursor:wait;}td{border:2px solid black; text-align:center;transition: ease-in-out 0.3s;} table{margin-bottom:30px;width:40%;margin-left:30%;border:2px solid black;} tr:hover td{background-color:lightgrey;font-weight:bold;}</style></head><body>"<< troll << "<h1 style=\"font-size:50px;text-align:center\">SportTracker</h1>";
+    html<<"<html>"<<endl;
+    html<<"<head>"<<endl;
+    html<<"<title>SportTracker</title>"<<endl;
+    html<<"<style>"<<endl;
+    html<<"*{}"<<endl;
+    html<<"body{background: linear-gradient(to right, rgba(95, 211, 255, 0.68), rgb(158, 255, 175));}"<<endl;
+    html<<"td{border:2px solid black; text-align:center;transition: ease-in-out 0.3s;background-color:white;}"<<endl;
+    html<<"table{margin-bottom:30px;width:40%;margin-left:30%;border:2px solid black;}"<<endl;
+    html<<"tr:hover td{background-color:lightgrey;font-weight:bold;}"<<endl;
+    html<<"</style>"<<endl;
+    html<<"</head>"<<endl;
+    html<<"<body>"<<endl;
+    html<<"<h1 style=\"font-size:50px;text-align:center\">SportTracker</h1>";
 
+
+    string subdate;
+    int month;
+    int day;
     //Vyber aktivity pro mesicni souhrn a prumerna rychlost
 
     cout<<"Zadejte typ aktivity (chuze, beh, kolo, inline): ";
@@ -156,32 +202,42 @@ void generateHtml(Activities activity[])
     html<<"<h1 style=\"text-align:center;\">Mesicni souhrn aktivity "<<type<<"</h1>";
 
 
+
     for(int i=1;i<13;i++)
     {
-        bool goout = true;
-        for(int j=0;j<generateId();j++)
+        int counter=0;
+        bool heading = true;
+        for(int j=0;j<generateId()-1;j++)
         {
-            if(activity[j].sdate[3]-'0'==i&&goout)
+            subdate=activity[j].sdate;
+            subdate = subdate.substr(2,2);
+            month = atoi(subdate.c_str());
+            if(month==i)
             {
                 if(activity[j].stype==type)
                 {
-                    html<<"<table cellspacing=\"0\"><tr><td colspan=\"100%\" style=\"background-color:yellow;\">" <<i<<". mesic</td></tr><tr><td>Den</td><td>Vzdalenost</td><td>Cas</td><td>Kalore</td><td>Rychlost</td></tr>";
-                    goout=false;
+                    if(heading)
+                    html<<"<table cellspacing=\"0\"><tr><td colspan=\"100%\" style=\"background-color:yellow;\">" <<i<<". mesic</td></tr><tr><td>Den</td><td>Vzdalenost</td><td>Cas</td><td>Kalorie</td><td>Rychlost</td></tr>";
+                    mesicniSouhrn[counter]=j;
+                    counter++;
+                    heading=false;
                 }
             }
         }
-        for(int j=0;j<generateId();j++)
+        for(int j=0;j<counter;j++)
         {
-            if(activity[j].sdate[3]-'0'==i)
-            {
-                if(activity[j].stype==type)
-                html << "<tr><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << ".</td><td>" << activity[j].sroute<<"km"<< "</td><td>"<<activity[j].stime<<" minut</td><td>"<<activity[j].scalories<<"kcal</td><td>"<<activity[j].sspeed <<  "km/h</td></tr>";
-            }
+            subdate=activity[mesicniSouhrn[j]].sdate;
+            subdate = subdate.substr(2,2);
+            month = atoi(subdate.c_str());
+            subdate=activity[mesicniSouhrn[j]].sdate;
+            subdate = subdate.substr(0,2);
+            day = atoi(subdate.c_str());
+            html << "<tr><td>"<< day << ".</td><td>" << activity[mesicniSouhrn[j]].sroute<<"km"<< "</td><td>"<<activity[mesicniSouhrn[j]].stime<<" minut</td><td>"<<activity[mesicniSouhrn[j]].scalories<<"kcal</td><td>"<<activity[mesicniSouhrn[j]].sspeed <<  "km/h</td></tr>";
+
         }
 
         html<<"</table>";
     }
-
 
 
     int pocet[4];
@@ -191,7 +247,7 @@ void generateHtml(Activities activity[])
     pocet[1]=0; //beh
     pocet[2]=0; //chuze
     pocet[3]=0; //kolo
-    for(int j=0;j<generateId();j++)
+    for(int j=0;j<generateId()-1;j++)
     {
             if(activity[j].stype=="inline")
                 pocet[0]++;
@@ -220,14 +276,14 @@ void generateHtml(Activities activity[])
 
         newnames[i] = names[index];
     }
-    html<<"<h1 style=\"text-align:center;\">Rocni tabulka serazena podle cetnosti</h1><table cellspacing=\"0\"><tr><td colspan=\"100%\" style=\"background-color:yellow;\">ROCNI PREHLED</td></tr><tr><td>Typ</td><td>Den</td><td>Vzdalenost</td><td>Cas</td><td>Kalore</td><td>Rychlost</td></tr>";
+    html<<"<h1 style=\"text-align:center;\">Rocni tabulka serazena podle cetnosti</h1><table cellspacing=\"0\"><tr><td colspan=\"100%\" style=\"background-color:yellow;\">ROCNI PREHLED</td></tr><tr><td>Typ</td><td>Den</td><td>Vzdalenost</td><td>Cas</td><td>Kalorie</td><td>Rychlost</td></tr>";
     for(int i =0;i<4;i++)
     {
-         for(int j=0;j<generateId();j++)
+         for(int j=0;j<generateId()-1;j++)
         {
 
                 if(activity[j].stype==newnames[i])
-                html << "<tr><td>"<<activity[j].stype<<"</td><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << "."<<activity[j].sdate[0]<<activity[j].sdate[1]<<".</td><td>" << activity[j].sroute<<"km"<< "</td><td>"<<activity[j].stime<<" minut</td><td>"<<activity[j].scalories<<"kcal</td><td>"<<activity[j].sspeed <<  "km/h</td></tr>";
+                html << "<tr><td>"<<activity[j].stype<<"</td><td>"<< activity[j].sdate[0]<<activity[j].sdate[1] << "."<<activity[j].sdate[2]<<activity[j].sdate[3]<<".</td><td>" << activity[j].sroute<<"km"<< "</td><td>"<<activity[j].stime<<" minut</td><td>"<<activity[j].scalories<<"kcal</td><td>"<<activity[j].sspeed <<  "km/h</td></tr>";
 
         }
     }
@@ -239,7 +295,7 @@ void generateHtml(Activities activity[])
     menu(activity);
 }
 
-//MENU
+///@brief Funkce pro volani menu
 void menu(Activities activity[])
 {
     cout << "Vyberte si akci:" <<endl;
