@@ -1,0 +1,126 @@
+\hypertarget{main_8cpp}{}\section{C\+:/\+Users/chvatste/\+Documents/\+Git\+Hub/\+Sport\+Tracker/solution/main.cpp File Reference}
+\label{main_8cpp}\index{C\+:/\+Users/chvatste/\+Documents/\+Git\+Hub/\+Sport\+Tracker/solution/main.\+cpp@{C\+:/\+Users/chvatste/\+Documents/\+Git\+Hub/\+Sport\+Tracker/solution/main.\+cpp}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_activities}{Activities}
+\begin{DoxyCompactList}\small\item\em Struktura obsahujici vsechny aktivity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_a52d641df366ef8a037bbde6182d22e1c}\label{main_8cpp_a52d641df366ef8a037bbde6182d22e1c}} 
+ifstream {\bfseries ifs} (\char`\"{}..\textbackslash{}stupnidata\textbackslash{}ata.\+csv\char`\"{})
+\item 
+\mbox{\Hypertarget{main_8cpp_a77ed70f0a04f942f1de5e4b5ae25248b}\label{main_8cpp_a77ed70f0a04f942f1de5e4b5ae25248b}} 
+ofstream {\bfseries ofs} (\char`\"{}..\textbackslash{}stupnidata\textbackslash{}ata.\+csv\char`\"{}, ios\+\_\+base\+::app)
+\item 
+void \hyperlink{main_8cpp_a9f495c7cd2d84095e3d887031b2169b4}{menu} (\hyperlink{struct_activities}{Activities} activity\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Funkce pro volani menu. \end{DoxyCompactList}\item 
+int \hyperlink{main_8cpp_aa040cde751b25e1594db0ad4c160ff56}{generate\+Id} ()
+\begin{DoxyCompactList}\small\item\em Funkce pro zjisteni poctu radku v C\+SV (generovani nasledujiciho ID) \end{DoxyCompactList}\item 
+double \hyperlink{main_8cpp_ad2d799b64f8cd25ee999ba7e9b7e93d4}{count\+Calories} (double dist, double time)
+\begin{DoxyCompactList}\small\item\em Funkce pro vypocet kalorii. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_aa93d7de9c3d5729482a7c82bb2b73daa}\label{main_8cpp_aa93d7de9c3d5729482a7c82bb2b73daa}} 
+void \hyperlink{main_8cpp_aa93d7de9c3d5729482a7c82bb2b73daa}{write\+Activity} (\hyperlink{struct_activities}{Activities} activity\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Funkce pro zapsani aktivity. \end{DoxyCompactList}\item 
+void \hyperlink{main_8cpp_a429ebf832505c2695c4f4b95d21f7ae8}{fill\+Activities} (\hyperlink{struct_activities}{Activities} activity\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Funkce pro naplneni pole struktury. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_a2872babe026419e759354b6fe76e6c19}\label{main_8cpp_a2872babe026419e759354b6fe76e6c19}} 
+void \hyperlink{main_8cpp_a2872babe026419e759354b6fe76e6c19}{generate\+Html} (\hyperlink{struct_activities}{Activities} activity\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Funkce pro generovani H\+T\+ML. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+int {\bfseries main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_a988e6c0d8b2a9807e4271ed921cd529b}\label{main_8cpp_a988e6c0d8b2a9807e4271ed921cd529b}} 
+string {\bfseries date}
+\item 
+\mbox{\Hypertarget{main_8cpp_acce15679d830831b0bbe8ebc2a60b2ca}\label{main_8cpp_acce15679d830831b0bbe8ebc2a60b2ca}} 
+string {\bfseries type}
+\item 
+\mbox{\Hypertarget{main_8cpp_ac1f80132866a1bd4eef34ad48605b115}\label{main_8cpp_ac1f80132866a1bd4eef34ad48605b115}} 
+double {\bfseries route}
+\item 
+\mbox{\Hypertarget{main_8cpp_ab2d5aa7fce1a14d8bddfb2c333ea9679}\label{main_8cpp_ab2d5aa7fce1a14d8bddfb2c333ea9679}} 
+double {\bfseries time}
+\item 
+\mbox{\Hypertarget{main_8cpp_a0fd47b826fcdf035066857bd12df69dc}\label{main_8cpp_a0fd47b826fcdf035066857bd12df69dc}} 
+double {\bfseries calories}
+\item 
+\mbox{\Hypertarget{main_8cpp_a6dc6e6f3c75c509ce943163afb5dade7}\label{main_8cpp_a6dc6e6f3c75c509ce943163afb5dade7}} 
+double {\bfseries speed}
+\item 
+\mbox{\Hypertarget{main_8cpp_a49a7637a4420e6eaa14ead1667c46b81}\label{main_8cpp_a49a7637a4420e6eaa14ead1667c46b81}} 
+int $\ast$ {\bfseries mesicni\+Souhrn} = (int$\ast$)malloc(sizeof(int))
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_ad2d799b64f8cd25ee999ba7e9b7e93d4}\label{main_8cpp_ad2d799b64f8cd25ee999ba7e9b7e93d4}} 
+\index{main.\+cpp@{main.\+cpp}!count\+Calories@{count\+Calories}}
+\index{count\+Calories@{count\+Calories}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{count\+Calories()}{countCalories()}}
+{\footnotesize\ttfamily double count\+Calories (\begin{DoxyParamCaption}\item[{double}]{dist,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+
+
+Funkce pro vypocet kalorii. 
+
+Realizace funkce vypoctu kalorii.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & Potrebna vzdalenost aktivity \\
+\hline
+{\em cas} & Potrebny cas aktivity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a429ebf832505c2695c4f4b95d21f7ae8}\label{main_8cpp_a429ebf832505c2695c4f4b95d21f7ae8}} 
+\index{main.\+cpp@{main.\+cpp}!fill\+Activities@{fill\+Activities}}
+\index{fill\+Activities@{fill\+Activities}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{fill\+Activities()}{fillActivities()}}
+{\footnotesize\ttfamily void fill\+Activities (\begin{DoxyParamCaption}\item[{\hyperlink{struct_activities}{Activities}}]{activity\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Funkce pro naplneni pole struktury. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em activity} & Predavani pole \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_aa040cde751b25e1594db0ad4c160ff56}\label{main_8cpp_aa040cde751b25e1594db0ad4c160ff56}} 
+\index{main.\+cpp@{main.\+cpp}!generate\+Id@{generate\+Id}}
+\index{generate\+Id@{generate\+Id}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{generate\+Id()}{generateId()}}
+{\footnotesize\ttfamily int generate\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Funkce pro zjisteni poctu radku v C\+SV (generovani nasledujiciho ID) 
+
+Funkce generovani ID viz vyse. \mbox{\Hypertarget{main_8cpp_a9f495c7cd2d84095e3d887031b2169b4}\label{main_8cpp_a9f495c7cd2d84095e3d887031b2169b4}} 
+\index{main.\+cpp@{main.\+cpp}!menu@{menu}}
+\index{menu@{menu}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{menu()}{menu()}}
+{\footnotesize\ttfamily void menu (\begin{DoxyParamCaption}\item[{\hyperlink{struct_activities}{Activities}}]{activity\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Funkce pro volani menu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em activity} & Predavani pole ze struktury \\
+\hline
+\end{DoxyParams}
